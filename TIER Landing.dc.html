@@ -537,7 +537,7 @@
           <div id="signup-error" style="display:none; font-size: 12px; color: #FF6E52; padding: 10px 12px; border-radius: 8px; background: rgba(255,110,82,0.10); border: 1px solid rgba(255,110,82,0.30);"></div>
 
           <button type="submit" id="signup-submit" style="width: 100%; padding: 18px 22px; border-radius: 14px; background: #FF1F8F; color: #0B0B0F; font-size: 16px; font-weight: 800; border: 0; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            제출하고 결과 보기 →
+            매칭 풀 입장하기 →
           </button>
           <div style="text-align: center; font-size: 11px; color: rgba(255,255,255,0.35);">제출 시 HeartSync 매칭 풀(TIER)에 등록됩니다.</div>
         </form>
@@ -602,7 +602,7 @@
         </div>
 
         <div style="display: grid; gap: 10px; margin-top: 24px;">
-          <button type="button" data-go="quiz" style="width: 100%; padding: 18px 22px; border-radius: 14px; background: #FF1F8F; color: #0B0B0F; font-size: 16px; font-weight: 800; border: 0; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.01em;">매칭 풀 입장 신청 →</button>
+          <button type="button" id="btn-pool-apply" data-go="signup" style="width: 100%; padding: 18px 22px; border-radius: 14px; background: #FF1F8F; color: #0B0B0F; font-size: 16px; font-weight: 800; border: 0; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.01em;">매칭 풀 입장 신청 →</button>
           <div style="display: flex; gap: 8px;">
             <button type="button" id="btn-share-card" aria-label="이미지 다운로드" style="flex: 0 0 56px; height: 52px; border-radius: 14px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.12); display: grid; place-items: center;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v13m0 0l-5-5m5 5l5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -965,8 +965,8 @@
     if (q2 && typeof q2.value === 'number' && q2.value >= 4 && !state.photoUploaded) {
       showView('view-gate');
     } else {
-      renderTeaser();
-      showView('view-teaser');
+      renderResult();
+      showView('view-result');
     }
   });
 
@@ -986,14 +986,14 @@
 
   $('btn-gate-proceed').addEventListener('click', () => {
     state.deferVideoCall = false;
-    renderTeaser();
-    showView('view-teaser');
+    renderResult();
+    showView('view-result');
   });
 
   $('btn-gate-defer').addEventListener('click', () => {
     state.deferVideoCall = true;
-    renderTeaser();
-    showView('view-teaser');
+    renderResult();
+    showView('view-result');
   });
 
   // ============ RESULT ============
@@ -1406,6 +1406,16 @@
       const { error } = await sb.from('profiles').insert(row);
       if (error) throw error;
 
+      // 가입 완료 → 결과 화면으로 돌아가서 CTA 상태 갱신
+      state.joinedPool = true;
+      const poolBtn = document.getElementById('btn-pool-apply');
+      if (poolBtn) {
+        poolBtn.textContent = '✓ 매칭 풀 입장 완료';
+        poolBtn.disabled = true;
+        poolBtn.removeAttribute('data-go');
+        poolBtn.style.background = 'rgba(255,31,143,0.20)';
+        poolBtn.style.color = '#FF1F8F';
+      }
       renderResult();
       showView('view-result');
     } catch (err) {
