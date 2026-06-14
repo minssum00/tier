@@ -1058,9 +1058,9 @@
 
   function computeTier(score) {
     if (score >= 32) return TIERS[0]; // GOD   95+
-    if (score >= 29) return TIERS[1]; // ALPHA 85+
-    if (score >= 24) return TIERS[2]; // BETA+ 70+
-    if (score >= 17) return TIERS[3]; // BETA  50+
+    if (score >= 27) return TIERS[1]; // ALPHA 80+ (낮춤: "조금 더 노력하면 ALPHA")
+    if (score >= 22) return TIERS[2]; // BETA+ 65+
+    if (score >= 16) return TIERS[3]; // BETA  47+
     if (score >= 10) return TIERS[4]; // GAMMA 30+
     return TIERS[5];                  // OMEGA
   }
