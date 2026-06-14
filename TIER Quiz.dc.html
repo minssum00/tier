@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TIER · 측정</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; background: #0B0B0F; color: #fff; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body { overflow-x: hidden; }
+  button { font-family: inherit; cursor: pointer; }
+  button:disabled, button[disabled] { opacity: 0.35; cursor: not-allowed; }
+  a { text-decoration: none; color: inherit; }
+  @keyframes view-in { 0% { transform: translateY(8px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+  .opt {
+    width: 100%; padding: 14px 14px; border-radius: 12px;
+    background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08);
+    color: #fff; text-align: left; display: flex; align-items: flex-start; gap: 12px;
+    transition: background 180ms ease, border-color 180ms ease;
+  }
+  .opt.selected { background: rgba(255,31,143,0.08); border-color: #FF1F8F; border-width: 1.5px; }
+  .opt-score { flex: 0 0 auto; padding: 3px 7px; border-radius: 6px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); font-size: 10.5px; font-weight: 900; letter-spacing: 0.04em; margin-top: 2px; min-width: 26px; text-align: center; line-height: 1.4; }
+  .opt.selected .opt-score { background: #FF1F8F; color: #0B0B0F; }
+  .opt-label { font-size: 14px; font-weight: 600; line-height: 1.4; color: #fff; letter-spacing: -0.005em; }
+  .opt-meta { font-size: 11.5px; margin-top: 4px; color: rgba(255,255,255,0.45); }
+  .opt-check { flex: 0 0 auto; width: 18px; height: 18px; border-radius: 50%; background: #FF1F8F; color: #0B0B0F; display: grid; place-items: center; font-size: 11px; font-weight: 900; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<div style="min-height: 100vh; width: 100%; background: #0B0B0F; position: relative; overflow: hidden;">
+  <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 40% at 50% 0%, rgba(255,31,143,0.10), transparent 70%), linear-gradient(180deg, transparent, rgba(0,0,0,0.6) 80%);"></div>
+
+  <div style="position: relative; max-width: 600px; margin: 0 auto; padding: 0 20px;">
+
+    <!-- QUIZ VIEW -->
+    <section id="view-quiz" style="padding: 22px 0 80px; animation: view-in 280ms ease both;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 22px;">
+        <a href="./TIER%20Landing.dc.html" aria-label="닫기" style="display: grid; place-items: center; width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10); color: rgba(255,255,255,0.7); flex: 0 0 auto;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </a>
+        <div style="flex: 1; display: grid; gap: 6px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between;">
+            <span style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.22em; color: rgba(255,255,255,0.55);">TIER · 자기객관화 진행 중</span>
+            <span id="q-index" style="font-size: 12px; font-weight: 800; color: #FF1F8F; letter-spacing: 0.04em;">1 / 12</span>
+          </div>
+          <div style="height: 4px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;">
+            <div id="q-progress" style="height: 100%; background: #FF1F8F; border-radius: 999px; width: 8.33%; transition: width 240ms ease; box-shadow: 0 0 10px rgba(255,31,143,0.5);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="q-eyebrow" style="display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px 5px 8px; border-radius: 999px; margin-bottom: 16px;"></div>
+      <h2 id="q-title" style="margin: 0 0 10px; font-size: clamp(22px, 5.6vw, 28px); line-height: 1.32; letter-spacing: -0.025em; font-weight: 900; color: #fff;"></h2>
+      <p id="q-sub" style="margin: 0 0 22px; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.5);"></p>
+
+      <div id="q-options" style="display: grid; gap: 10px;"></div>
+
+      <div id="photo-slot" style="display: none; margin-top: 14px; padding: 14px; border-radius: 12px; background: rgba(255,31,143,0.05); border: 1px dashed rgba(255,31,143,0.40); align-items: center; gap: 12px; animation: view-in 240ms ease both;">
+        <div style="flex: 0 0 40px; height: 40px; border-radius: 10px; background: rgba(255,31,143,0.12); display: grid; place-items: center; color: #FF1F8F;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="1.7"/><path d="M8 6V4h8v2" stroke="currentColor" stroke-width="1.7"/></svg>
+        </div>
+        <div style="flex: 1; min-width: 0;">
+          <div id="photo-status-inline" style="font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px;">기본 카메라 사진 1장 필요</div>
+          <div style="font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.4;">매니저 심사 후 등급 확정 · 기본 카메라만</div>
+        </div>
+        <button id="photo-toggle-inline" type="button" style="padding: 9px 12px; border-radius: 8px; background: #FF1F8F; color: #0B0B0F; font-size: 12px; font-weight: 800; border: 0; white-space: nowrap;">사진 선택</button>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 28px;">
+        <button id="btn-prev" type="button" disabled style="flex: 0 0 auto; padding: 14px 18px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); color: rgba(255,255,255,0.8); font-size: 14px; font-weight: 700;">← 이전</button>
+        <button id="btn-next" type="button" disabled style="flex: 1; padding: 14px 18px; border-radius: 12px; background: #FF1F8F; color: #0B0B0F; border: 0; font-size: 15px; font-weight: 800; letter-spacing: -0.01em;">다음 →</button>
+      </div>
+
+      <div style="margin-top: 16px; text-align: center; font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.02em;">
+        정확한 답이 정확한 매칭을 만듭니다. 도망갈 곳 없습니다.
+      </div>
+    </section>
+
+    <!-- PHOTO GATE VIEW -->
+    <section id="view-gate" style="display: none; padding: 36px 0 80px; animation: view-in 280ms ease both;">
+      <a href="./TIER%20Landing.dc.html" aria-label="닫기" style="display: grid; place-items: center; width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10); color: rgba(255,255,255,0.7); margin-bottom: 22px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+
+      <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 10px; border-radius: 999px; background: rgba(255,234,0,0.10); border: 1px solid rgba(255,234,0,0.40); margin-bottom: 22px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#FFEA00" stroke-width="1.7"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#FFEA00" stroke-width="1.7"/></svg>
+        <span style="font-size: 11px; font-weight: 900; letter-spacing: 0.18em; color: #FFEA00;">승인 대기</span>
+      </div>
+
+      <h2 style="margin: 0 0 16px; font-size: clamp(28px, 7vw, 36px); line-height: 1.15; letter-spacing: -0.03em; font-weight: 900; color: #fff;">
+        <span style="color: #FFEA00; text-shadow: 0 0 22px rgba(255,234,0,0.25);">팩폭 검문소</span>에<br>도착했습니다.
+      </h2>
+
+      <p style="margin: 0 0 22px; font-size: 14.5px; line-height: 1.75; color: rgba(255,255,255,0.78);">
+        당신은 본인의 비주얼을 <b style="color:#fff;">상위권</b>으로 선택하셨습니다.<br>
+        TIER는 <b style="color:#FFEA00;">근거 없는 자신감</b>으로부터 유저를 보호합니다.<br>
+        주장의 증명을 위해 <b style="color:#fff;">기본 카메라 사진 1장</b>을 제출해주세요.<br>
+        매니저 심사 후 <b style="color:#FF1F8F;">30분 내</b>로 매칭 패스가 발급됩니다.
+      </p>
+
+      <div style="padding: 28px 20px 22px; border-radius: 16px; background: rgba(255,255,255,0.025); border: 1.5px dashed rgba(255,234,0,0.40); margin-bottom: 16px; text-align: center;">
+        <div style="width: 56px; height: 56px; margin: 0 auto 14px; border-radius: 14px; background: rgba(255,234,0,0.10); display: grid; place-items: center; color: #FFEA00;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="1.7"/><path d="M8 6V4h8v2" stroke="currentColor" stroke-width="1.7"/></svg>
+        </div>
+        <div id="photo-status-gate" style="font-size: 14.5px; font-weight: 800; color: #fff; margin-bottom: 4px;">기본 카메라 사진 1장 필요</div>
+        <div style="font-size: 11.5px; color: rgba(255,255,255,0.45); line-height: 1.5; margin-bottom: 14px;">필터 · 보정 · 후면 카메라 셀카 모두 거절됩니다.</div>
+        <button id="photo-toggle-gate" type="button" style="padding: 11px 22px; border-radius: 10px; background: #FFEA00; color: #0B0B0F; font-size: 13px; font-weight: 900; border: 0; letter-spacing: -0.01em;">사진 선택</button>
+      </div>
+
+      <button id="btn-gate-proceed" type="button" disabled style="width: 100%; padding: 18px 22px; border-radius: 14px; background: #FF1F8F; color: #0B0B0F; font-size: 16px; font-weight: 800; border: 0; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        사진 제출 후 결과 보기
+      </button>
+
+      <div style="margin-top: 14px; text-align: center; font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.5;">
+        사진은 매칭 매니저만 열람합니다. 매칭 시 자동 폐기.
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  const QUESTIONS = [
+    { num: '01', cat: '외적 · WEALTH', kind: 'point',
+      eyebrow: { bg: 'rgba(255,31,143,0.08)', border: 'rgba(255,31,143,0.30)', color: '#FF1F8F' },
+      q: '솔직해집시다. 당신의 현재 연 세전 소득(혹은 이에 준하는 경제력)은?',
+      sub: '월급 통장 잔고가 진실을 말합니다.',
+      options: [
+        { value: 1, scoreLabel: '1점', label: '숨만 쉬어도 돈이 무서운 사회초년생/준비생', meta: '3,500만 원 미만' },
+        { value: 2, scoreLabel: '2점', label: '내 밥벌이는 스스로 하는 평범한 직장인', meta: '3,500만 ~ 5,500만' },
+        { value: 4, scoreLabel: '4점', label: '또래보다 확실히 여유 있는 고소득자', meta: '5,500만 ~ 1억' },
+        { value: 6, scoreLabel: '6점', label: '자산 형성이 궤도에 오른 초고소득자/자산가', meta: '1억 원 이상' },
+      ],
+    },
+    { num: '02', cat: '외적 · LOOKS', kind: 'point',
+      eyebrow: { bg: 'rgba(255,31,143,0.08)', border: 'rgba(255,31,143,0.30)', color: '#FF1F8F' },
+      q: '거울 앞 당신의 외모, 연애 시장에서 솔직히 몇 계급인가요?',
+      sub: '허위 기재 시 사진 인증 단계에서 영구 밴. 도망갈 곳 없습니다.',
+      options: [
+        { value: 6, scoreLabel: '6점', label: '아이돌/모델급. 어딜 가나 칭찬 받음', meta: '번호 3번 이상 뜯겨봄' },
+        { value: 4, scoreLabel: '4점', label: '주선자가 당당해지는 훈훈함', meta: '남친짤/훈녀상' },
+        { value: 2, scoreLabel: '2점', label: '깔끔하지만 길거리에 자주 보이는 무난함', meta: '평균' },
+        { value: 1, scoreLabel: '1점', label: '현생과 타협한 내추럴 상태', meta: '관심 없음' },
+        { value: 2, scoreLabel: '?점', label: '내 입으로 평가하긴 민망. 매니저 심사로', meta: '사진 업로드 · 임시 2점', needsPhoto: true },
+      ],
+    },
+    { num: '03', cat: '외적 · EDU', kind: 'point',
+      eyebrow: { bg: 'rgba(255,31,143,0.08)', border: 'rgba(255,31,143,0.30)', color: '#FF1F8F' },
+      q: '연애/결혼 시장에서 학벌은 여전히 유효한 간판입니다. 최종 학력은?',
+      sub: '수능 점수는 안 받습니다. 졸업장만.',
+      options: [
+        { value: 1, scoreLabel: '1점', label: '고등학교 졸업 / 초대졸', meta: '' },
+        { value: 3, scoreLabel: '3점', label: '인서울 및 수도권 주요 4년제', meta: '' },
+        { value: 4, scoreLabel: '4점', label: '해외 명문대 / 지방 거점 국립대', meta: '' },
+        { value: 6, scoreLabel: '6점', label: 'SKY / 카이스트 / 포스텍 / 의치한약수', meta: '서연고 + α' },
+      ],
+    },
+    { num: '04', cat: '외적 · LOC', kind: 'point',
+      eyebrow: { bg: 'rgba(255,31,143,0.08)', border: 'rgba(255,31,143,0.30)', color: '#FF1F8F' },
+      q: '데이트 피로도를 결정하는 핵심. 주된 활동/거주 지역은?',
+      sub: '거리는 곧 만남의 주기입니다.',
+      options: [
+        { value: 5, scoreLabel: '5점', label: '트렌디한 서울 중심부', meta: '강남·송파·마포·성수·용산' },
+        { value: 4, scoreLabel: '4점', label: '인프라 좋은 서울 외곽 + 경기 주요', meta: '분당·판교·일산' },
+        { value: 2, scoreLabel: '2점', label: '수도권 외곽', meta: '이동 거리 부담' },
+        { value: 1, scoreLabel: '1점', label: '지방', meta: '롱디 각오' },
+      ],
+    },
+    { num: '05', cat: '외적 · CARE', kind: 'point',
+      eyebrow: { bg: 'rgba(255,31,143,0.08)', border: 'rgba(255,31,143,0.30)', color: '#FF1F8F' },
+      q: '자기 객관화 시간입니다. 몸 상태와 평소 관리 수준은?',
+      sub: '거울이 거짓말을 하진 않습니다.',
+      options: [
+        { value: 1, scoreLabel: '1점', label: '운동은 숨쉬기뿐, 야식과 배달 매니아', meta: 'BMI 주의 단계' },
+        { value: 2, scoreLabel: '2점', label: '가끔 죄책감에 운동, 꾸준함은 없음', meta: '평범' },
+        { value: 5, scoreLabel: '5점', label: '주 3회 이상 운동 + 식단 라이프스타일', meta: '헬스·필라테스·러닝' },
+      ],
+    },
+    { num: '06', cat: '외적 · REP', kind: 'point',
+      eyebrow: { bg: 'rgba(255,31,143,0.08)', border: 'rgba(255,31,143,0.30)', color: '#FF1F8F' },
+      q: '사회적 지위와 커리어의 안정성/확장성은 어느 정도인가요?',
+      sub: '명함은 안 부끄럽나요?',
+      options: [
+        { value: 1, scoreLabel: '1점', label: '진로 고민 중 / 불안정', meta: '무직·단기 알바' },
+        { value: 2, scoreLabel: '2점', label: '일반 중소 직장인 / 신규 프리랜서', meta: '' },
+        { value: 4, scoreLabel: '4점', label: '중견기업·유망 스타트업·공무원·공기업', meta: '이름 대면 아는' },
+        { value: 6, scoreLabel: '6점', label: '대기업 / 전문직 / 안정 사업가', meta: '의사·변호사 등' },
+      ],
+    },
+    { num: '07', cat: '내적 · MARRIAGE', kind: 'type',
+      eyebrow: { bg: 'rgba(255,234,0,0.08)', border: 'rgba(255,234,0,0.30)', color: '#FFEA00' },
+      q: '당신이 생각하는 결혼이라는 종착지에 대한 타임라인은?',
+      sub: '결혼관은 양보 안 됩니다.',
+      options: [
+        { value: 'A', scoreLabel: 'A', label: '마음에 드는 사람만 있다면 2년 내 결혼', meta: '결혼 급함' },
+        { value: 'B', scoreLabel: 'B', label: '연애 2~3년 후 신중하게 결정', meta: '신중파' },
+        { value: 'C', scoreLabel: 'C', label: '결혼 제도에 연연 안 함 / 비혼 가까움', meta: '자유 영혼' },
+      ],
+    },
+    { num: '08', cat: '내적 · POLITICS', kind: 'type',
+      eyebrow: { bg: 'rgba(255,234,0,0.08)', border: 'rgba(255,234,0,0.30)', color: '#FFEA00' },
+      q: '연인의 정치 성향, 당신에게 얼마나 중요한가요?',
+      sub: '식탁 분위기가 바뀝니다.',
+      options: [
+        { value: 'A', scoreLabel: 'A', label: '난 무정치 성향. 누굴 지지하든 내 알 바 아님', meta: '무관심' },
+        { value: 'B', scoreLabel: 'B', label: '극단만 아니면 됨. 상식선에서 대화 통하면 OK', meta: '중도' },
+        { value: 'C', scoreLabel: 'C', label: '가치관 직결. 지향점 다르면 대화 자체가 불가', meta: '확고' },
+      ],
+    },
+    { num: '09', cat: '내적 · RELIGION', kind: 'type',
+      eyebrow: { bg: 'rgba(255,234,0,0.08)', border: 'rgba(255,234,0,0.30)', color: '#FFEA00' },
+      q: '상대방의 종교 유무와 활동에 대한 당신의 마지노선은?',
+      sub: '주말 일정은 신앙심 다음입니다.',
+      options: [
+        { value: 'A', scoreLabel: 'A', label: '무교 선호. 권유만 안 하면 상관없음', meta: '관용' },
+        { value: 'B', scoreLabel: 'B', label: '같은 종교 / 데이트 지장 없으면 OK', meta: '조건부' },
+        { value: 'C', scoreLabel: 'C', label: '주말 종교 활동 필수 / 무교와는 불가', meta: '독실' },
+      ],
+    },
+    { num: '10', cat: '내적 · FINANCE', kind: 'type',
+      eyebrow: { bg: 'rgba(255,234,0,0.08)', border: 'rgba(255,234,0,0.30)', color: '#FFEA00' },
+      q: '월급이 들어왔을 때, 당신의 통장이 반응하는 방식은?',
+      sub: '돈 쓰는 톤이 다르면 모든 데이트가 어색해집니다.',
+      options: [
+        { value: 'A', scoreLabel: 'A', label: 'YOLO! 좋은 경험(여행·맛집)에 아낌없이', meta: '경험 소비형' },
+        { value: 'B', scoreLabel: 'B', label: '쓸 땐 쓰고 아낄 땐 아끼는 예산제', meta: '밸런스형' },
+        { value: 'C', scoreLabel: 'C', label: '시드머니 최우선. 지출 극도로 통제', meta: '짠테크형' },
+      ],
+    },
+    { num: '11', cat: '내적 · CONFLICT', kind: 'type',
+      eyebrow: { bg: 'rgba(255,234,0,0.08)', border: 'rgba(255,234,0,0.30)', color: '#FFEA00' },
+      q: '연애 중 서운/말다툼이 생겼을 때 당신의 행동 패턴은?',
+      sub: '싸움보다 무서운 건 해결 방식이 다른 것.',
+      options: [
+        { value: 'A', scoreLabel: 'A', label: '혼자 생각할 시간(동굴)이 무조건 필요', meta: '냉각기' },
+        { value: 'B', scoreLabel: 'B', label: '그날 감정은 그날 대화로 풀어야 함', meta: '즉시 해결' },
+        { value: 'C', scoreLabel: 'C', label: '싸우기 싫음 → 맞춰주거나 회피', meta: '평화주의' },
+      ],
+    },
+    { num: '12', cat: '내적 · ENERGY', kind: 'type',
+      eyebrow: { bg: 'rgba(255,234,0,0.08)', border: 'rgba(255,234,0,0.30)', color: '#FFEA00' },
+      q: '주말, 당신의 배터리를 충전하는 가장 이상적인 방법은?',
+      sub: '데이트 코스를 결정합니다.',
+      options: [
+        { value: 'A', scoreLabel: 'A', label: '주말엔 무조건 밖으로! 핫플 + 사람', meta: '아웃도어' },
+        { value: 'B', scoreLabel: 'B', label: '토 외출 + 일 집순/집돌', meta: '하이브리드' },
+        { value: 'C', scoreLabel: 'C', label: '침대 + 넷플릭스 + 배달 = 행복', meta: '집순이/집돌이' },
+      ],
+    },
+  ];
+
+  const state = {
+    qIndex: 0,
+    answers: new Array(12).fill(null),
+    photoUploaded: false,
+  };
+
+  const $ = (id) => document.getElementById(id);
+
+  function renderQuestion() {
+    const i = state.qIndex;
+    const q = QUESTIONS[i];
+
+    $('q-index').textContent = (i + 1) + ' / 12';
+    $('q-progress').style.width = (((i + 1) / 12) * 100) + '%';
+
+    const eb = $('q-eyebrow');
+    eb.style.background = q.eyebrow.bg;
+    eb.style.border = '1px solid ' + q.eyebrow.border;
+    eb.innerHTML =
+      '<span style="font-size: 10px; font-weight: 900; letter-spacing: 0.18em; color: ' + q.eyebrow.color + ';">' + q.num + '</span>' +
+      '<span style="font-size: 10px; font-weight: 700; letter-spacing: 0.20em; color: rgba(255,255,255,0.7);">' + q.cat + '</span>';
+
+    $('q-title').textContent = q.q;
+    $('q-sub').textContent = q.sub;
+
+    const sel = state.answers[i];
+    const opts = $('q-options');
+    opts.innerHTML = '';
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'opt' + (sel && sel.optionIndex === idx ? ' selected' : '');
+      btn.innerHTML =
+        '<span class="opt-score">' + opt.scoreLabel + '</span>' +
+        '<div style="flex: 1; min-width: 0;">' +
+          '<div class="opt-label">' + opt.label + '</div>' +
+          (opt.meta ? '<div class="opt-meta">' + opt.meta + '</div>' : '') +
+        '</div>' +
+        (sel && sel.optionIndex === idx ? '<span class="opt-check">✓</span>' : '');
+      btn.addEventListener('click', () => selectOption(idx));
+      opts.appendChild(btn);
+    });
+
+    const selectedOpt = sel ? q.options[sel.optionIndex] : null;
+    const needsPhoto = !!(selectedOpt && selectedOpt.needsPhoto);
+    $('photo-slot').style.display = needsPhoto ? 'flex' : 'none';
+    $('photo-status-inline').textContent = state.photoUploaded ? '사진 1장 업로드됨 · 매니저 심사 대기' : '기본 카메라 사진 1장 필요';
+    $('photo-toggle-inline').textContent = state.photoUploaded ? '✓ 업로드됨' : '사진 선택';
+
+    $('btn-prev').disabled = i === 0;
+    const canProceed = sel != null && (!needsPhoto || state.photoUploaded);
+    $('btn-next').disabled = !canProceed;
+    $('btn-next').textContent = i === 11 ? '결과 보기 →' : '다음 →';
+  }
+
+  function selectOption(idx) {
+    const i = state.qIndex;
+    const q = QUESTIONS[i];
+    const opt = q.options[idx];
+    state.answers[i] = { optionIndex: idx, value: opt.value, kind: q.kind, needsPhoto: !!opt.needsPhoto };
+    if (i === 1 && !opt.needsPhoto) state.photoUploaded = false;
+    renderQuestion();
+  }
+
+  function persistAndGo() {
+    try {
+      localStorage.setItem('tier:result', JSON.stringify({
+        answers: state.answers,
+        photoUploaded: state.photoUploaded,
+        savedAt: Date.now(),
+      }));
+    } catch (e) {}
+    window.location.href = './TIER%20Result.dc.html';
+  }
+
+  $('btn-prev').addEventListener('click', () => {
+    if (state.qIndex > 0) { state.qIndex--; renderQuestion(); window.scrollTo(0, 0); }
+  });
+
+  $('btn-next').addEventListener('click', () => {
+    if (state.qIndex < 11) { state.qIndex++; renderQuestion(); window.scrollTo(0, 0); return; }
+    const q2 = state.answers[1];
+    const triggerGate = q2 && (q2.value === 4 || q2.value === 6) && !state.photoUploaded;
+    if (triggerGate) {
+      $('view-quiz').style.display = 'none';
+      $('view-gate').style.display = 'block';
+      window.scrollTo(0, 0);
+    } else {
+      persistAndGo();
+    }
+  });
+
+  $('photo-toggle-inline').addEventListener('click', () => {
+    state.photoUploaded = !state.photoUploaded;
+    renderQuestion();
+  });
+
+  $('photo-toggle-gate').addEventListener('click', () => {
+    state.photoUploaded = !state.photoUploaded;
+    $('photo-status-gate').textContent = state.photoUploaded ? '사진 1장 업로드됨 · 매니저 심사 대기' : '기본 카메라 사진 1장 필요';
+    $('photo-toggle-gate').textContent = state.photoUploaded ? '✓ 업로드됨' : '사진 선택';
+    $('btn-gate-proceed').disabled = !state.photoUploaded;
+    $('btn-gate-proceed').textContent = state.photoUploaded ? '✓ 제출 완료 · 결과 보기' : '사진 제출 후 결과 보기';
+  });
+
+  $('btn-gate-proceed').addEventListener('click', persistAndGo);
+
+  renderQuestion();
+})();
+</script>
+</body>
+</html>
