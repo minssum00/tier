@@ -695,6 +695,55 @@
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxlanhlcm94Ym5jdmplcnloam1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzNjA5MzgsImV4cCI6MjA4NTkzNjkzOH0.-tKnF6w0Cf-RRLWwYiomLBDib_ZssHzt_fXyVrWjVlk';
   const sb = window.supabase && window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  // ============ ATTRIBUTION ============
+  // HeartSync 통합 가이드의 captureAttribution / getAttribution 등가 구현 (vanilla)
+  const ATTR_KEY = 'hs:attribution';
+
+  function deriveSourceFromReferrer(ref) {
+    if (!ref) return null;
+    let host = '';
+    try { host = new URL(ref).hostname.toLowerCase(); } catch (e) { return null; }
+    if (host.includes('instagram')) return 'instagram';
+    if (host.includes('kakao'))     return 'kakao';
+    if (host.includes('naver'))     return 'naver';
+    if (host.includes('google'))    return 'google';
+    if (host.includes('blind'))     return 'blind';
+    if (host.includes('daangn'))    return 'daangn';
+    if (host.includes('twitter') || host.includes('x.com')) return 'twitter';
+    if (host.includes('facebook') || host.includes('fb.com')) return 'facebook';
+    return 'other';
+  }
+
+  function captureAttribution() {
+    try {
+      const existing = localStorage.getItem(ATTR_KEY);
+      if (existing) return JSON.parse(existing);
+
+      const params = new URLSearchParams(location.search);
+      const refParam = params.get('ref') || params.get('utm_source');
+      const signup_source = refParam || deriveSourceFromReferrer(document.referrer) || 'direct';
+
+      const attr = {
+        signup_source,
+        landing_referrer: document.referrer || null,
+      };
+      localStorage.setItem(ATTR_KEY, JSON.stringify(attr));
+      return attr;
+    } catch (e) {
+      return { signup_source: null, landing_referrer: null };
+    }
+  }
+
+  function getAttribution() {
+    try {
+      const existing = localStorage.getItem(ATTR_KEY);
+      if (existing) return JSON.parse(existing);
+    } catch (e) {}
+    return captureAttribution();
+  }
+
+  captureAttribution();  // 첫 진입 시 1회 캡처
+
   // ============ DATA ============
   const TIERS = [
     { name: 'GOD',   short: '神', pct: '상위 0.1%', tag: '신 · 생태계 파괴자', grade: 'SS', color: '#FFD700', stroke: '#FFD700', bgFill: 'rgba(255,215,0,0.14)',  glowBg: 'rgba(255,215,0,0.28)',  sub: 'rgba(255,215,0,0.50)',  fontSize: 26 },
@@ -1461,6 +1510,7 @@
 
     return {
       service_origin: 'tier',
+      ...getAttribution(),
       nickname:   String(formData.get('nickname') || '').trim(),
       email:      String(formData.get('email') || '').trim(),
       gender:     formData.get('gender'),
