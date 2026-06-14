@@ -44,6 +44,14 @@
   .opt-meta { font-size: 11.5px; margin-top: 4px; color: rgba(255,255,255,0.45); }
   .opt-check { flex: 0 0 auto; width: 18px; height: 18px; border-radius: 50%; background: #FF1F8F; color: #0B0B0F; display: grid; place-items: center; font-size: 11px; font-weight: 900; margin-top: 2px; }
   .chip { padding: 9px 14px; border-radius: 999px; background: rgba(0,0,0,0.30); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 700; text-align: center; transition: background 160ms ease, border-color 160ms ease, color 160ms ease; cursor: pointer; }
+  .gallery-wrap { position: relative; }
+  .gallery-nav { position: absolute; top: calc(50% - 14px); transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; background: rgba(11,11,15,0.78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.14); color: #fff; display: grid; place-items: center; z-index: 3; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  .gallery-nav:disabled { opacity: 0.25; cursor: not-allowed; }
+  .gallery-nav-left { left: -4px; }
+  .gallery-nav-right { right: -4px; }
+  .gallery-dots { display: flex; justify-content: center; gap: 6px; margin-top: 4px; }
+  .gallery-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.22); border: 0; padding: 0; transition: width 220ms ease, background 220ms ease; cursor: pointer; }
+  .gallery-dot.active { width: 22px; border-radius: 999px; background: #FF1F8F; }
   label:has(input:checked) .chip { background: #FF1F8F; border-color: #FF1F8F; color: #0B0B0F; }
   input[type=range]:disabled { opacity: 0.35; }
 </style>
@@ -110,11 +118,21 @@
             <span style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255,255,255,0.35);">하위 ↓</span>
           </div>
 
-          <div class="tier-scroll" style="display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 14px 4px 18px; margin: 0 -4px;" id="tier-gallery"></div>
+          <div class="gallery-wrap">
+            <button type="button" class="gallery-nav gallery-nav-left" data-scroll-dir="-1" aria-label="이전 계급">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="tier-scroll" style="display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 14px 4px 18px; margin: 0 -4px;" id="tier-gallery"></div>
+            <button type="button" class="gallery-nav gallery-nav-right" data-scroll-dir="1" aria-label="다음 계급">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
 
-          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; font-size: 11px; color: rgba(255,255,255,0.42);">
+          <div class="gallery-dots" id="gallery-dots"></div>
+
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.42);">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M8 6l-6 6 6 6M2 12h20" stroke="rgba(255,255,255,0.5)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            좌우로 밀어서 6개 계급 확인
+            좌우로 밀거나 화살표로 6개 계급 확인
           </div>
         </div>
       </section>
@@ -680,16 +698,16 @@
   // ============ DATA ============
   const TIERS = [
     { name: 'GOD',   short: '神', pct: '상위 0.1%', tag: '신 · 생태계 파괴자', grade: 'SS', color: '#FFD700', stroke: '#FFD700', bgFill: 'rgba(255,215,0,0.14)',  glowBg: 'rgba(255,215,0,0.28)',  sub: 'rgba(255,215,0,0.50)',  fontSize: 26 },
-    { name: 'ALPHA', short: 'A',  pct: '상위 8%',   tag: '사랑의 포식자',     grade: 'S+', color: '#FF1F8F', stroke: '#FF1F8F', bgFill: 'rgba(255,31,143,0.14)', glowBg: 'rgba(255,31,143,0.24)', sub: 'rgba(255,31,143,0.45)', fontSize: 30 },
-    { name: 'BETA+', short: 'B+', pct: '상위 25%',  tag: '알짜 육각형',       grade: 'S',  color: '#5AF0FF', stroke: '#00E5FF', bgFill: 'rgba(0,229,255,0.10)',  glowBg: 'rgba(0,229,255,0.18)',  sub: 'rgba(0,229,255,0.30)',  fontSize: 22 },
+    { name: 'ALPHA(진)', short: 'A',  pct: '상위 8%',  tag: '사랑의 포식자',       grade: 'S+', color: '#FF1F8F', stroke: '#FF1F8F', bgFill: 'rgba(255,31,143,0.14)', glowBg: 'rgba(255,31,143,0.24)', sub: 'rgba(255,31,143,0.45)', fontSize: 30 },
+    { name: 'ALPHA-',   short: 'A-', pct: '상위 25%', tag: 'ALPHA 직전, 한 끗 차이', grade: 'S',  color: '#5AF0FF', stroke: '#00E5FF', bgFill: 'rgba(0,229,255,0.10)',  glowBg: 'rgba(0,229,255,0.18)',  sub: 'rgba(0,229,255,0.30)',  fontSize: 22 },
     { name: 'BETA',  short: 'B',  pct: '상위 55%',  tag: '무난한 연애가능',   grade: 'A',  color: '#93F0D6', stroke: '#6FE7C8', bgFill: 'rgba(111,231,200,0.10)',glowBg: 'rgba(111,231,200,0.18)',sub: 'rgba(111,231,200,0.30)',fontSize: 30 },
     { name: 'GAMMA', short: 'Γ',  pct: '상위 78%',  tag: '연애 컨설팅 필요',  grade: 'B',  color: '#FFE07A', stroke: '#FFD43A', bgFill: 'rgba(255,212,58,0.10)', glowBg: 'rgba(255,212,58,0.18)', sub: 'rgba(255,212,58,0.32)', fontSize: 30 },
     { name: 'OMEGA', short: 'Ω',  pct: '하위 25%',  tag: '매니저 상담 필요',  grade: 'C',  color: '#DCE3EE', stroke: '#C7D2E0', bgFill: 'rgba(199,210,224,0.08)',glowBg: 'rgba(199,210,224,0.14)',sub: 'rgba(199,210,224,0.25)',fontSize: 28 },
   ];
   const FACTBOMBS = {
     GOD:    '이미 본인이 신인 걸 알고 있는 영역. 매칭 풀에 들어오는 순간 다른 회원들 자존감이 박살. 시장 전체의 균형을 흔드는 생태계 파괴자.',
-    ALPHA:  '외모·능력·피지컬 모든 면에서 사랑의 최상위 포식자. 자정 넘어 선톡해도 칼답 받는 종족. 본인이 갑인 걸 이미 알고 있을 확률 100%.',
-    'BETA+': '훈훈한 외모 또는 확실한 경제력 중 최소 하나는 가진 알짜배기. 결혼 시장에서 프리패스에 가장 가까운 매물.',
+    'ALPHA(진)': '외모·능력·피지컬 모든 면에서 사랑의 최상위 포식자. 자정 넘어 선톡해도 칼답 받는 종족. 본인이 갑인 걸 이미 알고 있을 확률 100%.',
+    'ALPHA-':    'ALPHA 진입 직전의 한 끗 차이. 훈훈한 외모 또는 확실한 경제력 중 최소 하나는 가진 알짜배기. 결혼 시장에서 프리패스에 가장 가까운 매물.',
     BETA:   '무난하고 깔끔한 평균 이상. 든든하지만 먼저 대시하지 않으면 은근히 연애 빡센 구간. 적극성 한 끗 차이.',
     GAMMA:  '"착하긴 한데..." 소리를 주로 듣는 멸종 위기의 초식남/건어물녀. 외모·커리어·라이프스타일 중 하나에 즉시 투자 필요.',
     OMEGA:  '현생(업무/학업)에 올인하느라 연애 세포가 완전히 박살 난 상태. 매니저와 1:1 상담을 통해 본질부터 다시 세팅할 시간.',
@@ -909,6 +927,63 @@
     </div>`;
   }
   $('tier-gallery').innerHTML = TIERS.map(tierCardHTML).join('');
+
+  // 갤러리 화살표 + 도트 인디케이터
+  (function setupGalleryNav() {
+    const gallery = $('tier-gallery');
+    const dotsBox = $('gallery-dots');
+    const navs = document.querySelectorAll('.gallery-nav');
+
+    // 도트 생성
+    TIERS.forEach((t, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', t.name);
+      dot.addEventListener('click', () => scrollToCard(i));
+      dotsBox.appendChild(dot);
+    });
+
+    function getCenteredIdx() {
+      const centerX = gallery.scrollLeft + gallery.offsetWidth / 2;
+      let idx = 0, minDist = Infinity;
+      Array.from(gallery.children).forEach((c, i) => {
+        const cx = c.offsetLeft + c.offsetWidth / 2;
+        const d = Math.abs(cx - centerX);
+        if (d < minDist) { minDist = d; idx = i; }
+      });
+      return idx;
+    }
+
+    function scrollToCard(i) {
+      const card = gallery.children[i];
+      if (!card) return;
+      const left = card.offsetLeft - gallery.offsetWidth / 2 + card.offsetWidth / 2;
+      gallery.scrollTo({ left, behavior: 'smooth' });
+    }
+
+    function updateIndicators() {
+      const idx = getCenteredIdx();
+      document.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      const left = navs[0], right = navs[1];
+      if (left)  left.disabled  = idx === 0;
+      if (right) right.disabled = idx === TIERS.length - 1;
+    }
+
+    navs.forEach(btn => btn.addEventListener('click', () => {
+      const dir = parseInt(btn.dataset.scrollDir, 10);
+      const next = Math.max(0, Math.min(TIERS.length - 1, getCenteredIdx() + dir));
+      scrollToCard(next);
+    }));
+
+    let scrollTimer;
+    gallery.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(updateIndicators, 60);
+    }, { passive: true });
+
+    updateIndicators();
+  })();
 
   function criterionCard([num,en,kr,meta], accent) {
     const bg = accent === 'pink' ? 'rgba(255,255,255,0.025)' : 'rgba(255,234,0,0.04)';
