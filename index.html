@@ -698,7 +698,7 @@
   // ============ DATA ============
   const TIERS = [
     { name: 'GOD',   short: '神', pct: '상위 0.1%', tag: '신 · 생태계 파괴자', grade: 'SS', color: '#FFD700', stroke: '#FFD700', bgFill: 'rgba(255,215,0,0.14)',  glowBg: 'rgba(255,215,0,0.28)',  sub: 'rgba(255,215,0,0.50)',  fontSize: 26 },
-    { name: 'ALPHA(진)', short: 'A',  pct: '상위 8%',  tag: '사랑의 포식자',       grade: 'S+', color: '#FF1F8F', stroke: '#FF1F8F', bgFill: 'rgba(255,31,143,0.14)', glowBg: 'rgba(255,31,143,0.24)', sub: 'rgba(255,31,143,0.45)', fontSize: 30 },
+    { name: 'ALPHA',  short: 'A',  pct: '상위 8%',  tag: '사랑의 포식자',         grade: 'S+', color: '#FF1F8F', stroke: '#FF1F8F', bgFill: 'rgba(255,31,143,0.14)', glowBg: 'rgba(255,31,143,0.24)', sub: 'rgba(255,31,143,0.45)', fontSize: 30 },
     { name: 'ALPHA-',   short: 'A-', pct: '상위 25%', tag: 'ALPHA 직전, 한 끗 차이', grade: 'S',  color: '#5AF0FF', stroke: '#00E5FF', bgFill: 'rgba(0,229,255,0.10)',  glowBg: 'rgba(0,229,255,0.18)',  sub: 'rgba(0,229,255,0.30)',  fontSize: 22 },
     { name: 'BETA',  short: 'B',  pct: '상위 55%',  tag: '무난한 연애가능',   grade: 'A',  color: '#93F0D6', stroke: '#6FE7C8', bgFill: 'rgba(111,231,200,0.10)',glowBg: 'rgba(111,231,200,0.18)',sub: 'rgba(111,231,200,0.30)',fontSize: 30 },
     { name: 'GAMMA', short: 'Γ',  pct: '상위 78%',  tag: '연애 컨설팅 필요',  grade: 'B',  color: '#FFE07A', stroke: '#FFD43A', bgFill: 'rgba(255,212,58,0.10)', glowBg: 'rgba(255,212,58,0.18)', sub: 'rgba(255,212,58,0.32)', fontSize: 30 },
@@ -706,7 +706,7 @@
   ];
   const FACTBOMBS = {
     GOD:    '이미 본인이 신인 걸 알고 있는 영역. 매칭 풀에 들어오는 순간 다른 회원들 자존감이 박살. 시장 전체의 균형을 흔드는 생태계 파괴자.',
-    'ALPHA(진)': '외모·능력·피지컬 모든 면에서 사랑의 최상위 포식자. 자정 넘어 선톡해도 칼답 받는 종족. 본인이 갑인 걸 이미 알고 있을 확률 100%.',
+    ALPHA: '외모·능력·피지컬 모든 면에서 사랑의 최상위 포식자. 자정 넘어 선톡해도 칼답 받는 종족. 본인이 갑인 걸 이미 알고 있을 확률 100%.',
     'ALPHA-':    'ALPHA 진입 직전의 한 끗 차이. 훈훈한 외모 또는 확실한 경제력 중 최소 하나는 가진 알짜배기. 결혼 시장에서 프리패스에 가장 가까운 매물.',
     BETA:   '무난하고 깔끔한 평균 이상. 든든하지만 먼저 대시하지 않으면 은근히 연애 빡센 구간. 적극성 한 끗 차이.',
     GAMMA:  '"착하긴 한데..." 소리를 주로 듣는 멸종 위기의 초식남/건어물녀. 외모·커리어·라이프스타일 중 하나에 즉시 투자 필요.',
@@ -1146,7 +1146,7 @@
     // 등급이 높을수록 매칭 풀이 적게 보임 (희소성 신호) — 모두 2자리
     const POOL_RANGE = {
       GOD:         [10, 18],
-      'ALPHA(진)': [15, 32],
+      ALPHA:       [15, 32],
       'ALPHA-':    [28, 55],
       BETA:        [45, 78],
       GAMMA:       [55, 88],
