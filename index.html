@@ -839,12 +839,32 @@
   const $ = (id) => document.getElementById(id);
 
   // ============ ROUTER ============
-  function go(view) {
+  const VIEW_PATHS = {
+    'view-landing': '/',
+    'view-quiz':    '/quiz',
+    'view-gate':    '/quiz',
+    'view-result':  '/result',
+    'view-signup':  '/signup',
+  };
+  function pushPath(viewId) {
+    const path = VIEW_PATHS[viewId] || '/';
+    if (location.pathname !== path) {
+      history.pushState({ view: viewId }, '', path);
+    }
+  }
+  function replacePath(viewId) {
+    history.replaceState({ view: viewId }, '', VIEW_PATHS[viewId] || '/');
+  }
+  function activateView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    $('view-' + view).classList.add('active');
+    const target = document.getElementById(viewId);
+    if (target) target.classList.add('active');
+  }
+  function go(view) {
+    const viewId = 'view-' + view;
+    activateView(viewId);
     window.scrollTo(0, 0);
     if (view === 'quiz') {
-      // reset on entry
       state.qIndex = 0;
       state.answers = new Array(12).fill(null);
       state.photoUploaded = false;
@@ -852,10 +872,22 @@
     } else if (view === 'result') {
       renderResult();
     }
+    pushPath(viewId);
   }
   document.body.addEventListener('click', (e) => {
     const t = e.target.closest('[data-go]');
     if (t) { e.preventDefault(); go(t.dataset.go); }
+  });
+  window.addEventListener('popstate', (e) => {
+    const viewId = (e.state && e.state.view) || 'view-landing';
+    const hasAnswers = state.answers.some(a => a !== null);
+    let target = viewId;
+    if ((viewId === 'view-result' || viewId === 'view-signup') && !hasAnswers) {
+      target = 'view-landing';
+    }
+    activateView(target);
+    if (target === 'view-result') renderResult();
+    window.scrollTo(0, 0);
   });
 
   // ============ LANDING ============
@@ -954,9 +986,9 @@
   });
 
   function showView(id) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    $(id).classList.add('active');
+    activateView(id);
     window.scrollTo(0, 0);
+    pushPath(id);
   }
 
   $('btn-next').addEventListener('click', () => {
@@ -1367,6 +1399,31 @@
     el.textContent = msg;
     el.style.display = 'block';
   }
+
+  // ============ INITIAL URL BOOTSTRAP ============
+  (function bootstrapFromURL() {
+    const path = location.pathname.replace(/\/$/, '') || '/';
+    let initial = 'view-landing';
+    if (path === '/quiz')   initial = 'view-quiz';
+    if (path === '/result') initial = 'view-result';
+    if (path === '/signup') initial = 'view-signup';
+
+    const hasAnswers = state.answers.some(a => a !== null);
+    if ((initial === 'view-result' || initial === 'view-signup') && !hasAnswers) {
+      initial = 'view-landing';
+    }
+    if (initial === 'view-quiz') {
+      state.qIndex = 0;
+      state.answers = new Array(12).fill(null);
+      state.photoUploaded = false;
+      renderQuestion();
+    }
+    if (initial !== 'view-landing') {
+      activateView(initial);
+      if (initial === 'view-result') renderResult();
+    }
+    replacePath(initial);
+  })();
 
   $('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
