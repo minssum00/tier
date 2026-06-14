@@ -1145,12 +1145,12 @@
     const tier = computeTier(totalScore);
     // 등급이 높을수록 매칭 풀이 적게 보임 (희소성 신호) — 모두 2자리
     const POOL_RANGE = {
-      GOD:     [10, 18],
-      ALPHA:   [15, 32],
-      'BETA+': [28, 55],
-      BETA:    [45, 78],
-      GAMMA:   [55, 88],
-      OMEGA:   [40, 75],
+      GOD:         [10, 18],
+      'ALPHA(진)': [15, 32],
+      'ALPHA-':    [28, 55],
+      BETA:        [45, 78],
+      GAMMA:       [55, 88],
+      OMEGA:       [40, 75],
     };
     const [pmin, pmax] = POOL_RANGE[tier.name] || [50, 99];
     const seed = (totalScore * 41 + 137) % 1000;
