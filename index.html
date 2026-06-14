@@ -680,10 +680,10 @@
   // ============ DATA ============
   const TIERS = [
     { name: 'GOD',   short: '神', pct: '상위 0.1%', tag: '신 · 생태계 파괴자', grade: 'SS', color: '#FFD700', stroke: '#FFD700', bgFill: 'rgba(255,215,0,0.14)',  glowBg: 'rgba(255,215,0,0.28)',  sub: 'rgba(255,215,0,0.50)',  fontSize: 26 },
-    { name: 'ALPHA', short: 'A',  pct: '상위 5%',   tag: '사랑의 포식자',     grade: 'S+', color: '#FF1F8F', stroke: '#FF1F8F', bgFill: 'rgba(255,31,143,0.14)', glowBg: 'rgba(255,31,143,0.24)', sub: 'rgba(255,31,143,0.45)', fontSize: 30 },
-    { name: 'BETA+', short: 'B+', pct: '상위 20%',  tag: '알짜 육각형',       grade: 'S',  color: '#5AF0FF', stroke: '#00E5FF', bgFill: 'rgba(0,229,255,0.10)',  glowBg: 'rgba(0,229,255,0.18)',  sub: 'rgba(0,229,255,0.30)',  fontSize: 22 },
-    { name: 'BETA',  short: 'B',  pct: '상위 50%',  tag: '무난한 연애가능',   grade: 'A',  color: '#93F0D6', stroke: '#6FE7C8', bgFill: 'rgba(111,231,200,0.10)',glowBg: 'rgba(111,231,200,0.18)',sub: 'rgba(111,231,200,0.30)',fontSize: 30 },
-    { name: 'GAMMA', short: 'Γ',  pct: '상위 75%',  tag: '연애 컨설팅 필요',  grade: 'B',  color: '#FFE07A', stroke: '#FFD43A', bgFill: 'rgba(255,212,58,0.10)', glowBg: 'rgba(255,212,58,0.18)', sub: 'rgba(255,212,58,0.32)', fontSize: 30 },
+    { name: 'ALPHA', short: 'A',  pct: '상위 8%',   tag: '사랑의 포식자',     grade: 'S+', color: '#FF1F8F', stroke: '#FF1F8F', bgFill: 'rgba(255,31,143,0.14)', glowBg: 'rgba(255,31,143,0.24)', sub: 'rgba(255,31,143,0.45)', fontSize: 30 },
+    { name: 'BETA+', short: 'B+', pct: '상위 25%',  tag: '알짜 육각형',       grade: 'S',  color: '#5AF0FF', stroke: '#00E5FF', bgFill: 'rgba(0,229,255,0.10)',  glowBg: 'rgba(0,229,255,0.18)',  sub: 'rgba(0,229,255,0.30)',  fontSize: 22 },
+    { name: 'BETA',  short: 'B',  pct: '상위 55%',  tag: '무난한 연애가능',   grade: 'A',  color: '#93F0D6', stroke: '#6FE7C8', bgFill: 'rgba(111,231,200,0.10)',glowBg: 'rgba(111,231,200,0.18)',sub: 'rgba(111,231,200,0.30)',fontSize: 30 },
+    { name: 'GAMMA', short: 'Γ',  pct: '상위 78%',  tag: '연애 컨설팅 필요',  grade: 'B',  color: '#FFE07A', stroke: '#FFD43A', bgFill: 'rgba(255,212,58,0.10)', glowBg: 'rgba(255,212,58,0.18)', sub: 'rgba(255,212,58,0.32)', fontSize: 30 },
     { name: 'OMEGA', short: 'Ω',  pct: '하위 25%',  tag: '매니저 상담 필요',  grade: 'C',  color: '#DCE3EE', stroke: '#C7D2E0', bgFill: 'rgba(199,210,224,0.08)',glowBg: 'rgba(199,210,224,0.14)',sub: 'rgba(199,210,224,0.25)',fontSize: 28 },
   ];
   const FACTBOMBS = {
@@ -715,13 +715,15 @@
   const QUESTIONS = [
     { num: '01', cat: '외적 · WEALTH', kind: 'point',
       eyebrow: { bg: 'rgba(255,31,143,0.08)', border: 'rgba(255,31,143,0.30)', color: '#FF1F8F' },
-      q: '솔직해집시다. 당신의 현재 연 세전 소득(혹은 이에 준하는 경제력)은?',
-      sub: '월급 통장 잔고가 진실을 말합니다.',
+      q: '솔직해집시다. 당신의 연 세전 소득과 보유 자산(부모님 지원 포함)은?',
+      sub: '직장인·사업가·프리랜서 공통. 허위 기재 시 추후 인증 단계에서 영구 밴.',
       options: [
-        { value: 1, scoreLabel: '1점', label: '숨만 쉬어도 돈이 무서운 사회초년생/준비생', meta: '3,500만 원 미만' },
-        { value: 2, scoreLabel: '2점', label: '내 밥벌이는 스스로 하는 평범한 직장인', meta: '3,500만 ~ 5,500만' },
-        { value: 4, scoreLabel: '4점', label: '또래보다 확실히 여유 있는 고소득자', meta: '5,500만 ~ 1억' },
-        { value: 6, scoreLabel: '6점', label: '자산 형성이 궤도에 오른 초고소득자/자산가', meta: '1억 원 이상' },
+        { value: 6, scoreLabel: '6점', label: '👑 자산 형성 완성 단계 또는 초고소득자', meta: '자산 5억+ (서울/수도권 자가 등) 또는 연 1억+' },
+        { value: 5, scoreLabel: '5점', label: '💎 또래보다 확실히 앞서가는 탄탄한 경제력', meta: '자산 2~5억 (수도권 전세금 확보 등) 또는 연 7,000만~1억' },
+        { value: 4, scoreLabel: '4점', label: '😎 안정적인 기반을 다지는 중', meta: '자산 1~2억 또는 연 5,500만~7,000만' },
+        { value: 3, scoreLabel: '3점', label: '😐 대한민국 직장인 평균, 탄탄한 허리 라인', meta: '자산 5,000만~1억 또는 연 4,000만~5,500만' },
+        { value: 2, scoreLabel: '2점', label: '🐣 시드머니 모으기 시작한 사회초년생', meta: '자산 5,000만 미만 또는 연 3,500만~4,000만' },
+        { value: 1, scoreLabel: '1점', label: '🤫 현생 준비 중 / 경제적 독립 준비 단계', meta: '연 3,500만 미만 / 취업 준비생' },
       ], maxScore: 6 },
     { num: '02', cat: '외적 · LOOKS', kind: 'point',
       eyebrow: { bg: 'rgba(255,31,143,0.08)', border: 'rgba(255,31,143,0.30)', color: '#FF1F8F' },
@@ -1351,7 +1353,14 @@
     lifestyle: { A: 0, B: 5, C: 10 }, // 밖순이 ↔ 집순이
     religion:  { A: 9, B: 5, C: 1 },  // 무관용/관용 ↔ 독실 (역방향)
   };
-  const INCOME_LABEL = { 1: '3,500만원 미만', 2: '3,500~5,500만원', 4: '5,500만~1억원', 6: '1억원 이상' };
+  const INCOME_LABEL = {
+    1: '3,500만 미만 / 측정 불가',
+    2: '3,500~4,000만 (자산 5천 미만)',
+    3: '4,000~5,500만 (자산 5천~1억)',
+    4: '5,500~7,000만 (자산 1~2억)',
+    5: '7,000만~1억 (자산 2~5억)',
+    6: '1억+ (자산 5억+)',
+  };
   const JOB_LABEL    = { 1: '준비생/무직', 2: '중소기업 직장인', 4: '중견기업/공기업/공무원', 6: '대기업/전문직' };
   const EDU_LABEL    = {
     1: '고졸/전문대',
