@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    { "source": "/TIER Landing.dc.html",        "destination": "/", "permanent": true },
+    { "source": "/TIER Quiz.dc.html",           "destination": "/", "permanent": true },
+    { "source": "/TIER Result.dc.html",         "destination": "/", "permanent": true },
+    { "source": "/TIER Color Options.dc.html",  "destination": "/", "permanent": true },
+    { "source": "/Landing.dc.html",             "destination": "/", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/quiz",   "destination": "/index.html" },
     { "source": "/result", "destination": "/index.html" },
