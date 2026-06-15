@@ -78,6 +78,19 @@
         <button type="button" data-go="quiz" style="font-size: 12px; font-weight: 700; color: #0B0B0F; background: #FF1F8F; border: 0; padding: 8px 12px; border-radius: 999px; letter-spacing: 0.02em;">측정 시작 →</button>
       </nav>
 
+      <!-- 친구가 공유한 결과 진입 시 보이는 배너 -->
+      <div id="friend-banner" style="display: none; margin: 16px 0 0; padding: 14px 16px; border-radius: 14px; background: linear-gradient(180deg, rgba(255,31,143,0.12), rgba(255,31,143,0.02)); border: 1px solid rgba(255,31,143,0.40); box-shadow: 0 12px 28px -16px rgba(255,31,143,0.40);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div id="friend-banner-badge" style="flex: 0 0 auto;"></div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 9.5px; font-weight: 800; letter-spacing: 0.20em; color: rgba(255,255,255,0.55); margin-bottom: 3px;">FROM A FRIEND</div>
+            <div id="friend-banner-text" style="font-size: 14.5px; font-weight: 800; color: #fff; line-height: 1.3;"></div>
+            <div id="friend-banner-sub" style="font-size: 11.5px; color: rgba(255,255,255,0.6); margin-top: 3px;"></div>
+          </div>
+          <button type="button" data-go="quiz" style="flex: 0 0 auto; padding: 10px 14px; border-radius: 999px; background: #FF1F8F; color: #0B0B0F; border: 0; font-size: 12px; font-weight: 800; white-space: nowrap;">나도 측정 →</button>
+        </div>
+      </div>
+
       <section style="padding: 36px 0 28px;">
         <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px 6px 8px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
           <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #FF1F8F; box-shadow: 0 0 8px #FF1F8F; animation: blink-dot 1.4s ease-in-out infinite;"></span>
@@ -720,7 +733,7 @@
       if (existing) return JSON.parse(existing);
 
       const params = new URLSearchParams(location.search);
-      const refParam = params.get('ref') || params.get('utm_source');
+      const refParam = params.get('ref') || params.get('utm_source') || (params.get('shared') ? 'shared' : null);
       const signup_source = refParam || deriveSourceFromReferrer(document.referrer) || 'direct';
 
       const attr = {
@@ -976,6 +989,25 @@
     </div>`;
   }
   $('tier-gallery').innerHTML = TIERS.map(tierCardHTML).join('');
+
+  // 친구가 공유한 결과 URL 진입 시 배너 표시 (?shared=ALPHA&score=85)
+  (function showFriendBanner() {
+    const params = new URLSearchParams(location.search);
+    const tierName = params.get('shared');
+    const score = params.get('score');
+    if (!tierName) return;
+    const tier = TIERS.find(t => t.name === tierName);
+    if (!tier) return;
+    const banner = $('friend-banner');
+    $('friend-banner-text').textContent = '친구가 ' + tier.name + ' 등급을 받았어요';
+    $('friend-banner-sub').textContent = (score ? score + '점 · ' : '') + tier.pct + ' · ' + tier.tag;
+    $('friend-banner-badge').innerHTML =
+      `<svg viewBox="0 0 88 100" width="50" height="56">` +
+        `<polygon points="44,6 80,24 80,64 44,82 8,64 8,24" fill="${tier.bgFill}" stroke="${tier.stroke}" stroke-width="1.8"/>` +
+        `<text x="44" y="60" font-family="Pretendard" font-size="${tier.fontSize}" font-weight="900" text-anchor="middle" fill="${tier.color}">${tier.short}</text>` +
+      `</svg>`;
+    banner.style.display = 'block';
+  })();
 
   // 갤러리 화살표 + 도트 인디케이터
   (function setupGalleryNav() {
@@ -1420,7 +1452,8 @@
   async function shareResultNative(btn) {
     if (!lastResult) return;
     const { tier, score100 } = lastResult;
-    const text = `나의 TIER 등급은 ${tier.name} (${tier.pct}, ${score100}/100점)\n#TIER #HeartSync`;
+    const shareURL = `${location.origin}/?shared=${encodeURIComponent(tier.name)}&score=${score100}`;
+    const text = `나의 TIER 등급은 ${tier.name} (${tier.pct}, ${score100}점) 🔥\n\n너도 1분 만에 측정해봐 👉 ${shareURL}\n\n#TIER #HeartSync #자기객관화`;
 
     populateShareCard();
     const original = btn.innerHTML;
