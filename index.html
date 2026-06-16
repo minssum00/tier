@@ -98,19 +98,6 @@
         <button type="button" data-go="quiz" style="font-size: 12px; font-weight: 700; color: #0B0B0F; background: #FF1F8F; border: 0; padding: 8px 12px; border-radius: 999px; letter-spacing: 0.02em;">측정 시작 →</button>
       </nav>
 
-      <!-- 친구가 공유한 결과 진입 시 보이는 배너 -->
-      <div id="friend-banner" style="display: none; margin: 16px 0 0; padding: 14px 16px; border-radius: 14px; background: linear-gradient(180deg, rgba(255,31,143,0.12), rgba(255,31,143,0.02)); border: 1px solid rgba(255,31,143,0.40); box-shadow: 0 12px 28px -16px rgba(255,31,143,0.40);">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div id="friend-banner-badge" style="flex: 0 0 auto;"></div>
-          <div style="flex: 1; min-width: 0;">
-            <div style="font-size: 9.5px; font-weight: 800; letter-spacing: 0.20em; color: rgba(255,255,255,0.55); margin-bottom: 3px;">FROM A FRIEND</div>
-            <div id="friend-banner-text" style="font-size: 14.5px; font-weight: 800; color: #fff; line-height: 1.3;"></div>
-            <div id="friend-banner-sub" style="font-size: 11.5px; color: rgba(255,255,255,0.6); margin-top: 3px;"></div>
-          </div>
-          <button type="button" data-go="quiz" style="flex: 0 0 auto; padding: 10px 14px; border-radius: 999px; background: #FF1F8F; color: #0B0B0F; border: 0; font-size: 12px; font-weight: 800; white-space: nowrap;">나도 측정 →</button>
-        </div>
-      </div>
-
       <section style="padding: 36px 0 28px;">
         <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px 6px 8px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
           <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #FF1F8F; box-shadow: 0 0 8px #FF1F8F; animation: blink-dot 1.4s ease-in-out infinite;"></span>
@@ -594,7 +581,18 @@
     <!-- ============ VIEW: RESULT ============ -->
     <div class="view" id="view-result">
       <section style="padding: 28px 0 80px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px;">
+        <!-- 친구 결과 공유 진입 시 보이는 헤더 -->
+        <div id="result-shared-topbar" style="display: none; margin-bottom: 22px; padding: 14px 16px; border-radius: 14px; background: linear-gradient(180deg, rgba(255,31,143,0.12), rgba(255,31,143,0.02)); border: 1px solid rgba(255,31,143,0.40);">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+            <div style="min-width: 0;">
+              <div style="font-size: 9.5px; font-weight: 800; letter-spacing: 0.22em; color: rgba(255,255,255,0.55); margin-bottom: 3px;">FROM A FRIEND</div>
+              <div id="result-shared-headline" style="font-size: 14px; font-weight: 800; color: #fff; line-height: 1.3;">친구의 TIER 결과를 보고 있어요</div>
+            </div>
+            <button type="button" data-go="landing" style="flex: 0 0 auto; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.55); background: transparent; border: 0;">처음으로 ↩</button>
+          </div>
+        </div>
+
+        <div id="result-topbar" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px;">
           <div style="display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px 5px 8px; border-radius: 999px; background: rgba(255,31,143,0.08); border: 1px solid rgba(255,31,143,0.30);">
             <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #FF1F8F; box-shadow: 0 0 8px #FF1F8F;"></span>
             <span style="font-size: 10.5px; font-weight: 900; letter-spacing: 0.22em; color: #FF1F8F;">측정 완료</span>
@@ -625,19 +623,23 @@
           <div id="tier-factbomb" style="font-size: 13.5px; line-height: 1.55; color: rgba(255,255,255,0.85);"></div>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-          <div style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.22em; color: rgba(255,255,255,0.85);">외적 · BREAKDOWN</div>
-          <div style="height: 1px; flex: 1; background: rgba(255,255,255,0.08);"></div>
-          <div id="breakdown-meta" style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.35);">0 / 100</div>
+        <div id="result-breakdown-section">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <div style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.22em; color: rgba(255,255,255,0.85);">외적 · BREAKDOWN</div>
+            <div style="height: 1px; flex: 1; background: rgba(255,255,255,0.08);"></div>
+            <div id="breakdown-meta" style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.35);">0 / 100</div>
+          </div>
+          <div id="breakdown" style="display: grid; gap: 8px;"></div>
         </div>
-        <div id="breakdown" style="display: grid; gap: 8px;"></div>
 
-        <div style="display: flex; align-items: center; gap: 10px; margin: 28px 0 12px;">
-          <div style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.22em; color: rgba(255,255,255,0.85);">내적 · PROFILE</div>
-          <div style="height: 1px; flex: 1; background: rgba(255,255,255,0.08);"></div>
-          <div style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.35);">6 traits</div>
+        <div id="result-profile-section">
+          <div style="display: flex; align-items: center; gap: 10px; margin: 28px 0 12px;">
+            <div style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.22em; color: rgba(255,255,255,0.85);">내적 · PROFILE</div>
+            <div style="height: 1px; flex: 1; background: rgba(255,255,255,0.08);"></div>
+            <div style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.35);">6 traits</div>
+          </div>
+          <div id="internal-chips" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;"></div>
         </div>
-        <div id="internal-chips" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;"></div>
 
         <div style="margin-top: 28px; padding: 20px 18px; border-radius: 14px; background: linear-gradient(180deg, rgba(255,31,143,0.08), rgba(255,31,143,0.01)); border: 1px solid rgba(255,31,143,0.28);">
           <div style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.22em; color: #FF1F8F; margin-bottom: 8px;">MATCH POOL</div>
@@ -648,7 +650,7 @@
           </div>
         </div>
 
-        <div style="display: grid; gap: 10px; margin-top: 24px;">
+        <div id="result-actions-default" style="display: grid; gap: 10px; margin-top: 24px;">
           <button type="button" id="btn-pool-apply" data-go="signup" style="width: 100%; padding: 18px 22px; border-radius: 14px; background: #FF1F8F; color: #0B0B0F; font-size: 16px; font-weight: 800; border: 0; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.01em;">매칭 풀 입장 신청 →</button>
           <div style="display: flex; gap: 8px;">
             <button type="button" id="btn-share-card" aria-label="이미지 다운로드" style="flex: 0 0 56px; height: 52px; border-radius: 14px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.12); display: grid; place-items: center;">
@@ -660,6 +662,18 @@
             </button>
           </div>
           <button type="button" data-go="landing" style="width: 100%; padding: 14px 22px; border-radius: 14px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.10); font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;">처음으로 ↩</button>
+        </div>
+
+        <!-- 친구 결과 공유 진입 시 보이는 CTA -->
+        <div id="result-shared-actions" style="display: none; margin-top: 28px;">
+          <div style="padding: 18px 18px 16px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,31,143,0.10), rgba(255,31,143,0.02)); border: 1px solid rgba(255,31,143,0.32); margin-bottom: 12px;">
+            <div style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.22em; color: #FF1F8F; margin-bottom: 8px;">● YOUR TURN</div>
+            <div style="font-size: 17px; font-weight: 900; color: #fff; line-height: 1.3; letter-spacing: -0.02em;">너의 진짜 계급은 몇 위일까?<br>1분 만에 확인해봐.</div>
+          </div>
+          <button type="button" data-go="quiz" style="width: 100%; padding: 18px 22px; border-radius: 14px; background: #FF1F8F; color: #0B0B0F; font-size: 16px; font-weight: 800; border: 0; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.01em; animation: pulse-cta 2.4s ease-in-out infinite;">
+            나도 1분 만에 측정하기
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#0B0B0F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
 
         <div style="margin-top: 14px; text-align: center; font-size: 10.5px; color: rgba(255,255,255,0.30); line-height: 1.6;">본 결과는 데모입니다. 실서비스에선 인증/검증 단계를 거쳐 산정됩니다.</div>
@@ -962,6 +976,8 @@
   }
   function go(view) {
     const viewId = 'view-' + view;
+    // shared 결과 모드 진입자가 다른 화면으로 이동할 때 → 본인 모드 UI로 복귀
+    if (view !== 'result') clearSharedResultMode();
     activateView(viewId);
     window.scrollTo(0, 0);
     if (view === 'quiz') {
@@ -1006,24 +1022,72 @@
   }
   $('tier-gallery').innerHTML = TIERS.map(tierCardHTML).join('');
 
-  // 친구가 공유한 결과 URL 진입 시 배너 표시 (?shared=ALPHA&score=85)
-  (function showFriendBanner() {
-    const params = new URLSearchParams(location.search);
-    const tierName = params.get('shared');
-    const score = params.get('score');
-    if (!tierName) return;
+  // 공유 결과 진입 시: 결과 페이지 풀버전을 친구의 데이터로 렌더 (state.answers 없이)
+  function renderSharedResult(tierName, scoreStr) {
     const tier = TIERS.find(t => t.name === tierName);
-    if (!tier) return;
-    const banner = $('friend-banner');
-    $('friend-banner-text').textContent = '친구가 ' + tier.name + ' 등급을 받았어요';
-    $('friend-banner-sub').textContent = (score ? score + '점 · ' : '') + tier.pct + ' · ' + tier.tag;
-    $('friend-banner-badge').innerHTML =
-      `<svg viewBox="0 0 88 100" width="50" height="56">` +
-        `<polygon points="44,6 80,24 80,64 44,82 8,64 8,24" fill="${tier.bgFill}" stroke="${tier.stroke}" stroke-width="1.8"/>` +
-        `<text x="44" y="60" font-family="Pretendard" font-size="${tier.fontSize}" font-weight="900" text-anchor="middle" fill="${tier.color}">${tier.short}</text>` +
+    if (!tier) return false;
+    const score100 = Math.max(0, Math.min(100, parseInt(scoreStr, 10) || 0));
+
+    lastResult = { tier, score100, factbomb: FACTBOMBS[tier.name], shared: true };
+
+    $('total-score').textContent = score100;
+    $('breakdown-meta').textContent = score100 + ' / 100';
+
+    const POOL_RANGE = {
+      GOD:         [10, 18],
+      ALPHA:       [15, 32],
+      'ALPHA-':    [28, 55],
+      BETA:        [45, 78],
+      GAMMA:       [55, 88],
+      OMEGA:       [40, 75],
+    };
+    const [pmin, pmax] = POOL_RANGE[tier.name] || [50, 99];
+    const seed = (score100 * 41 + 137) % 1000;
+    const matchCount = pmin + (seed % (pmax - pmin + 1));
+    $('match-count').textContent = '약 ' + matchCount + '명';
+
+    const card = $('tier-card');
+    card.style.background = `linear-gradient(180deg, ${tier.bgFill}, rgba(255,255,255,0.01))`;
+    card.style.border = `1px solid ${tier.stroke}`;
+    card.style.boxShadow = `0 24px 60px -24px ${tier.stroke}`;
+    $('tier-glow').style.background = `radial-gradient(60% 40% at 50% 0%, ${tier.glowBg}, transparent 70%)`;
+
+    $('tier-badge').innerHTML =
+      `<svg viewBox="0 0 88 100" width="92" height="104">` +
+        `<polygon points="44,6 80,24 80,64 44,82 8,64 8,24" fill="${tier.bgFill}" stroke="${tier.stroke}" stroke-width="2"/>` +
+        `<polygon points="44,14 72,28 72,60 44,74 16,60 16,28" fill="none" stroke="${tier.color}" stroke-opacity="0.6" stroke-width="0.85"/>` +
+        `<text x="44" y="58" font-family="Pretendard" font-size="${tier.fontSize}" font-weight="900" text-anchor="middle" fill="${tier.color}">${tier.short}</text>` +
       `</svg>`;
-    banner.style.display = 'block';
-  })();
+
+    $('tier-grade').textContent = 'YOUR TIER · ' + tier.grade;
+    $('tier-name').textContent = tier.name;
+    $('tier-name').style.color = tier.color;
+    $('tier-tagline').textContent = tier.pct + ' · ' + tier.tag;
+    $('tier-factbomb').textContent = FACTBOMBS[tier.name];
+
+    $('result-shared-headline').textContent = '친구의 등급은 ' + tier.name + ' · ' + score100 + '점';
+
+    // shared 모드 토글
+    document.getElementById('result-shared-topbar').style.display = 'block';
+    document.getElementById('result-topbar').style.display = 'none';
+    document.getElementById('result-breakdown-section').style.display = 'none';
+    document.getElementById('result-profile-section').style.display = 'none';
+    document.getElementById('result-actions-default').style.display = 'none';
+    document.getElementById('result-shared-actions').style.display = 'block';
+    return true;
+  }
+
+  // 본인 결과 모드로 복귀 (다시 측정/처음으로 등 navigation 시)
+  function clearSharedResultMode() {
+    if (!lastResult || !lastResult.shared) return;
+    lastResult = null;
+    document.getElementById('result-shared-topbar').style.display = 'none';
+    document.getElementById('result-topbar').style.display = 'flex';
+    document.getElementById('result-breakdown-section').style.display = '';
+    document.getElementById('result-profile-section').style.display = '';
+    document.getElementById('result-actions-default').style.display = 'grid';
+    document.getElementById('result-shared-actions').style.display = 'none';
+  }
 
   // 갤러리 화살표 + 도트 인디케이터
   (function setupGalleryNav() {
@@ -1469,29 +1533,23 @@
     if (!lastResult) return;
     const { tier, score100 } = lastResult;
     const shareURL = `${location.origin}/?shared=${encodeURIComponent(tier.name)}&score=${score100}`;
-    const text = `나의 TIER 등급은 ${tier.name} (${tier.pct}, ${score100}점) 🔥\n\n너도 1분 만에 측정해봐 👉 ${shareURL}\n\n#TIER #HeartSync #자기객관화`;
+    const text = `나의 TIER 등급은 ${tier.name} (${tier.pct}, ${score100}점) 🔥\n\n👉 ${shareURL}\n\n너도 1분 만에 측정하고 영구 결과 페이지 받기 #TIER #HeartSync #자기객관화`;
 
-    populateShareCard();
     const original = btn.innerHTML;
     btn.disabled = true;
 
     try {
-      const canvas = await html2canvas($('share-card-canvas'), { backgroundColor: '#0B0B0F', scale: 2, logging: false });
-      const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
-      const file = new File([blob], `TIER_${tier.name}.png`, { type: 'image/png' });
-
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'TIER · 나의 계급', text });
-      } else if (navigator.share) {
-        await navigator.share({ title: 'TIER · 나의 계급', text });
+      if (navigator.share) {
+        // URL+텍스트만 공유 → 카톡/페북/X에서 OG 이미지 카드로 자동 미리보기
+        await navigator.share({ title: 'TIER · 나의 계급', text, url: shareURL });
       } else {
-        // fallback: 클립보드 + 이미지 다운로드
-        try { await navigator.clipboard.writeText(text); } catch (e) {}
-        const link = document.createElement('a');
-        link.download = `TIER_${tier.name}_${score100}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        alert('공유 미지원 기기 — 이미지를 다운로드했어요. 텍스트는 클립보드에 복사됨.');
+        // fallback: 클립보드 복사
+        try {
+          await navigator.clipboard.writeText(text);
+          alert('공유 미지원 기기 — 링크가 클립보드에 복사되었어요. 친구에게 붙여넣으세요.');
+        } catch (e) {
+          prompt('아래 링크를 복사해서 공유하세요:', shareURL);
+        }
       }
     } catch (e) {
       if (e.name !== 'AbortError') {
@@ -1595,6 +1653,17 @@
   // ============ INITIAL URL BOOTSTRAP ============
   (function bootstrapFromURL() {
     const path = location.pathname.replace(/\/$/, '') || '/';
+    const params = new URLSearchParams(location.search);
+    const sharedTier = params.get('shared');
+    const sharedScore = params.get('score');
+
+    // ① 공유 결과 URL 진입 (?shared=ALPHA&score=85) → 결과 페이지 풀버전을 친구 데이터로 렌더
+    if (sharedTier && renderSharedResult(sharedTier, sharedScore)) {
+      activateView('view-result');
+      // URL은 그대로 보존 (영구 공유 링크 유지). path는 '/'.
+      return;
+    }
+
     let initial = 'view-landing';
     if (path === '/quiz')   initial = 'view-quiz';
     if (path === '/result') initial = 'view-result';
