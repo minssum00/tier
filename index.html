@@ -853,13 +853,13 @@
       q: '연애/결혼 시장에서 학벌은 여전히 유효한 간판입니다. 최종 학력은?',
       sub: '수능 점수는 안 받습니다. 졸업장만.',
       options: [
-        { value: 6, scoreLabel: '6점', label: '👑 대한민국 학벌 생태계 최상위 포식자', meta: '의치한약수 · SKY · 카이스트 · 포스텍' },
-        { value: 5, scoreLabel: '5점', label: '🎓 "공부 좀 했다" 소리 듣는 명문대 라인', meta: '서성한 · 해외 글로벌 명문대' },
-        { value: 4, scoreLabel: '4점', label: '😎 대기업 서류 패스는 무난한 주요 대학 라인', meta: '중경외시 · 건동홍숙' },
-        { value: 3, scoreLabel: '3점', label: '😐 대학생 평균, 가장 탄탄한 허리 라인', meta: '인서울 기타 · 수도권 주요 · 지방 거점 국립대(부산대·경북대 등)' },
+        { value: 7, scoreLabel: '7점', label: '👑 대한민국 학벌 생태계 최상위 포식자', meta: '의치한약수 · SKY · 카이스트 · 포스텍' },
+        { value: 5, scoreLabel: '5점', label: '🎓 "공부 좀 했다" 소리 듣는 명문대 라인', meta: '서성한 · 중경외시 · 해외 명문대' },
+        { value: 4, scoreLabel: '4점', label: '😎 무난히 대학생 평균 이상은 가는 라인', meta: '그 외 인서울 · 지방 거점 국립대(부산대·경북대 등)' },
+        { value: 3, scoreLabel: '3점', label: '😐 대학생 평균, 가장 탄탄한 허리 라인', meta: '기타 수도권 · 그 외 4년제' },
         { value: 2, scoreLabel: '2점', label: '📚 학벌 메리트는 무난한 성실한 라인', meta: '지방 일반 4년제 · 수도권 전문대' },
         { value: 1, scoreLabel: '1점', label: '🤫 간판보단 실전, 다른 길을 판 능력자', meta: '고등학교 졸업 · 초대졸' },
-      ], maxScore: 6 },
+      ], maxScore: 7 },
     { num: '04', cat: '외적 · LOC', kind: 'point',
       eyebrow: { bg: 'rgba(255,31,143,0.08)', border: 'rgba(255,31,143,0.30)', color: '#FF1F8F' },
       q: '데이트 피로도를 결정하는 핵심. 주된 활동/거주 지역은?',
@@ -1269,7 +1269,7 @@
   });
 
   // ============ RESULT ============
-  // raw 0~34 기준 임계값 (100점 환산: 95+/85+/70+/50+/30+/<30)
+  // raw 0~35 기준 임계값 (100점 환산: 95+/85+/70+/50+/30+/<30)
   function renderTeaser() {
     const totalScore = state.answers.slice(0, 6).reduce((s, a) => s + (a && typeof a.value === 'number' ? a.value : 0), 0);
     const tier = computeTier(totalScore);
@@ -1293,11 +1293,11 @@
   }
 
   function computeTier(score) {
-    if (score >= 32) return TIERS[0]; // GOD   95+
-    if (score >= 27) return TIERS[1]; // ALPHA 80+ (낮춤: "조금 더 노력하면 ALPHA")
-    if (score >= 22) return TIERS[2]; // BETA+ 65+
-    if (score >= 16) return TIERS[3]; // BETA  47+
-    if (score >= 10) return TIERS[4]; // GAMMA 30+
+    if (score >= 33) return TIERS[0]; // GOD   95+
+    if (score >= 28) return TIERS[1]; // ALPHA 80+ (낮춤: "조금 더 노력하면 ALPHA")
+    if (score >= 23) return TIERS[2]; // BETA+ 65+
+    if (score >= 17) return TIERS[3]; // BETA  47+
+    if (score >= 11) return TIERS[4]; // GAMMA 30+
     return TIERS[5];                  // OMEGA
   }
 
@@ -1317,7 +1317,7 @@
     const seed = (totalScore * 41 + 137) % 1000;
     const matchCount = pmin + (seed % (pmax - pmin + 1));
 
-    const score100 = Math.round(totalScore / 34 * 100);
+    const score100 = Math.round(totalScore / 35 * 100);
     lastResult = { tier, score100, factbomb: FACTBOMBS[tier.name] };
     $('total-score').textContent = score100;
     $('breakdown-meta').textContent = score100 + ' / 100';
@@ -1594,12 +1594,12 @@
   };
   const JOB_LABEL    = { 1: '준비생/무직', 2: '중소기업 직장인', 4: '중견기업/공기업/공무원', 6: '대기업/전문직' };
   const EDU_LABEL    = {
-    1: '고졸/전문대',
+    1: '고졸/초대졸',
     2: '지방 4년제/수도권 전문대',
-    3: '인서울/수도권/지방 거점 국립대',
-    4: '중경외시/건동홍숙',
-    5: '서성한/해외 명문대',
-    6: 'SKY/카이/포/의치한약수',
+    3: '기타 수도권/그 외 4년제',
+    4: '그 외 인서울/지방 거점 국립대',
+    5: '서성한/중경외시/해외 명문대',
+    7: 'SKY/카이/포/의치한약수',
   };
   const SIDO_LABEL   = { 5: '서울 (중심부)', 4: '서울 외곽/경기 주요', 2: '수도권 외곽', 1: '지방' };
 
