@@ -956,8 +956,8 @@
   // ============ ROUTER ============
   const VIEW_PATHS = {
     'view-landing': '/',
-    'view-quiz':    '/quiz',
-    'view-gate':    '/quiz',
+    'view-quiz':    '/check',
+    'view-gate':    '/check',
     'view-result':  '/result',
     'view-signup':  '/signup',
   };
@@ -1666,7 +1666,7 @@
     }
 
     let initial = 'view-landing';
-    if (path === '/quiz')   initial = 'view-quiz';
+    if (path === '/check' || path === '/quiz')   initial = 'view-quiz';
     if (path === '/result') initial = 'view-result';
     if (path === '/signup') initial = 'view-signup';
 

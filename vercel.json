@@ -4,10 +4,13 @@
     { "source": "/TIER Quiz.dc.html",           "destination": "/", "permanent": true },
     { "source": "/TIER Result.dc.html",         "destination": "/", "permanent": true },
     { "source": "/TIER Color Options.dc.html",  "destination": "/", "permanent": true },
-    { "source": "/Landing.dc.html",             "destination": "/", "permanent": true }
+    { "source": "/Landing.dc.html",             "destination": "/", "permanent": true },
+    { "source": "/quiz",                        "destination": "/check", "permanent": false }
   ],
   "rewrites": [
-    { "source": "/quiz",   "destination": "/index.html" },
+    { "source": "/", "has": [{ "type": "query", "key": "shared" }], "destination": "/index.html" },
+    { "source": "/",       "destination": "/home.html" },
+    { "source": "/check",  "destination": "/index.html" },
     { "source": "/result", "destination": "/index.html" },
     { "source": "/signup", "destination": "/index.html" }
   ],
