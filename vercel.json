@@ -8,11 +8,9 @@
     { "source": "/quiz",                        "destination": "/check", "permanent": false }
   ],
   "rewrites": [
-    { "source": "/", "has": [{ "type": "query", "key": "shared" }], "destination": "/index.html" },
-    { "source": "/",       "destination": "/home.html" },
-    { "source": "/check",  "destination": "/index.html" },
-    { "source": "/result", "destination": "/index.html" },
-    { "source": "/signup", "destination": "/index.html" }
+    { "source": "/check",  "destination": "/app.html" },
+    { "source": "/result", "destination": "/app.html" },
+    { "source": "/signup", "destination": "/app.html" }
   ],
   "headers": [
     {
