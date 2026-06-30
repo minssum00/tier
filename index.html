@@ -128,6 +128,15 @@
     padding-left: 12px; margin-left: 4px;
     border-left: 1px solid var(--glass-border);
   }
+  .logo-beta {
+    font-family: 'Orbitron', sans-serif; font-weight: 700;
+    font-size: 9px; letter-spacing: 0.20em;
+    padding: 3px 7px; border-radius: 999px;
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(59, 130, 246, 0.30);
+    margin-left: 4px;
+  }
   .btn-nav {
     font-size: 13px; font-weight: 700;
     padding: 10px 18px; border-radius: 999px;
@@ -328,6 +337,26 @@
     font-family: 'Orbitron', sans-serif;
     font-size: 16px;
     margin: 0 4px;
+  }
+  .metric-section-label {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 13px; font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+  }
+  .metric-section-label::before {
+    content: ''; width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .metric-section-label span {
+    font-family: 'Orbitron', sans-serif; font-weight: 900;
+    color: var(--accent);
+    font-size: 14px;
+    padding: 2px 8px; border-radius: 999px;
+    background: rgba(59, 130, 246, 0.10);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    margin-left: auto;
   }
 
   /* ============ LOGIC SECTION (등급 산정) ============ */
@@ -629,7 +658,7 @@
     <div class="logo">
       <span class="logo-dot"></span>
       <span>TIER</span>
-      <span class="logo-sub">BY HEART SYNC</span>
+      <span class="logo-beta">BETA</span>
     </div>
     <a href="/check" class="btn-nav">티어 확인하기</a>
   </div>
@@ -638,7 +667,7 @@
 <!-- ============ HERO ============ -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-tag font-display">TIER · BY HEART SYNC</div>
+    <div class="hero-tag font-display">COLD · SELF-OBJECTIFICATION</div>
     <h1>시간 낭비 없이,<br>내 수준에 맞는 인연을 만나세요</h1>
     <p class="hero-sub">12가지 정밀 지표로 분석하는 나의 현실 티어.<br>데이터는 거짓말을 하지 않습니다.</p>
     <div class="hero-cta">
@@ -651,8 +680,8 @@
         <div class="metric-label">정밀 지표</div>
       </div>
       <div class="metric">
-        <div class="metric-val">6×6</div>
-        <div class="metric-label">매칭 매트릭스</div>
+        <div class="metric-val">6<span style="font-size: 0.55em; vertical-align: 4px; margin-left: 2px;">계급</span></div>
+        <div class="metric-label">GOD~OMEGA</div>
       </div>
       <div class="metric">
         <div class="metric-val">3<span style="font-size: 0.55em; vertical-align: 4px; margin-left: 2px;">분</span></div>
@@ -692,52 +721,98 @@
 <section>
   <div class="wrap reveal">
     <div class="section-eyebrow"><h2>12가지 핵심 평가 지표</h2></div>
-    <p class="section-lead">외형·사회적 위치·내면 가치까지, 결혼 시장에서 실제로 작동하는 12개 축을 모두 측정합니다.</p>
+    <p class="section-lead">결혼 시장에서 실제로 작동하는 외형·환경 6개와 관계·가치관 6개, 총 12개 축을 모두 측정합니다.</p>
+    <div class="metric-section-label">외형 · 환경 <span>6</span></div>
     <div class="grid-3">
       <div class="card metric-card">
         <div class="icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/><path d="m17.5 4.5 2 2-3 3-2-2 3-3z"/></svg>
         </div>
         <h4 class="card-title">외모 · 피지컬</h4>
-        <p class="card-body">인증된 사진 기반 정밀 분석. 자기 평가와 시장 평가의 격차를 좁힙니다.</p>
+        <p class="card-body">사진 매니저 심사 + 자기 평가 교차 검증. 시장 평가와의 격차를 데이터로 좁힙니다.</p>
       </div>
       <div class="card metric-card">
         <div class="icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         </div>
-        <h4 class="card-title">직업 · 능력</h4>
-        <p class="card-body">사회적 위치와 커리어 가치. 안정성·전문성·성장성 세 축을 분리해 채점합니다.</p>
+        <h4 class="card-title">직업 · 커리어</h4>
+        <p class="card-body">대기업·전문직·공무원·스타트업 등 직군별 시장 가치를 5단계로 정렬합니다.</p>
       </div>
       <div class="card metric-card">
         <div class="icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
         </div>
-        <h4 class="card-title">경제력 · 자산</h4>
-        <p class="card-body">현실적인 결혼 준비도 평가. 연소득과 순자산을 또래 분포 기준으로 정렬합니다.</p>
+        <h4 class="card-title">자산 · 경제력</h4>
+        <p class="card-body">연소득과 순자산을 또래 분포 백분위로 환산. 현실적인 결혼 준비도를 측정합니다.</p>
       </div>
       <div class="card metric-card">
         <div class="icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5a2 2 0 0 0 1 1.7c1.5 1 3.3 1.3 5 1.3s3.5-.3 5-1.3a2 2 0 0 0 1-1.7v-5"/></svg>
         </div>
-        <h4 class="card-title">학력 · 배경</h4>
-        <p class="card-body">지적 수준과 성장 환경. 학벌 라인과 거주 인프라가 함께 작동하는 영역입니다.</p>
+        <h4 class="card-title">학력 · 학벌</h4>
+        <p class="card-body">의치한약수·SKY부터 인서울·지방 거점 국립까지. 입시 라인을 7단계로 채점합니다.</p>
       </div>
+      <div class="card metric-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h4 class="card-title">거주 · 인프라</h4>
+        <p class="card-body">강남·송파·마포·성수부터 지방까지. 만남 빈도와 라이프 인프라를 좌우하는 변수입니다.</p>
+      </div>
+      <div class="card metric-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.3 3-3.5 3-5.5a4.5 4.5 0 0 0-4.5-4.5c-1.5 0-3 .8-4 2.2A5.4 5.4 0 0 0 9 4 4.5 4.5 0 0 0 4.5 8.5c0 2 1.5 4.2 3 5.5l4.5 5 4.5-5z"/></svg>
+        </div>
+        <h4 class="card-title">신체 · 건강 관리</h4>
+        <p class="card-body">BMI·운동 루틴·식단. 외모와 별개로 작동하는 자기 관리 지표를 분리 평가합니다.</p>
+      </div>
+    </div>
+
+    <div class="metric-section-label" style="margin-top: 56px;">관계 · 가치관 <span>6</span></div>
+    <div class="grid-3">
       <div class="card metric-card">
         <div class="icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </div>
-        <h4 class="card-title">가치관 · 관계관</h4>
-        <p class="card-body">결혼 시점·정치 성향·종교·갈등 해결 방식. 장기적 합이 결정되는 무형 자산입니다.</p>
+        <h4 class="card-title">결혼관 · 시점</h4>
+        <p class="card-body">2년 내 결혼 / 신중파 / 비혼 성향. 같은 타임라인의 인연을 우선 매칭합니다.</p>
+      </div>
+      <div class="card metric-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
+        </div>
+        <h4 class="card-title">정치 · 신념</h4>
+        <p class="card-body">무관심 / 중도 / 확고. 식탁 위에서 매번 부딪힐 영역을 사전에 정렬합니다.</p>
+      </div>
+      <div class="card metric-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 8.7 8 10 4.5-1.3 8-5 8-10V6l-8-4z"/></svg>
+        </div>
+        <h4 class="card-title">종교 · 신앙</h4>
+        <p class="card-body">무교 / 조건부 / 독실. 주말 루틴과 가정 운영 방식을 가장 크게 좌우하는 변수.</p>
+      </div>
+      <div class="card metric-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="10" x2="6" y2="14"/><line x1="10" y1="10" x2="10" y2="14"/></svg>
+        </div>
+        <h4 class="card-title">소비 · 경제관</h4>
+        <p class="card-body">YOLO 경험 소비 / 밸런스형 / 짠테크형. 동거 후 가장 자주 충돌하는 영역.</p>
+      </div>
+      <div class="card metric-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v0"/><path d="M16 17h4a2 2 0 0 0 2-2V7"/></svg>
+        </div>
+        <h4 class="card-title">갈등 해결 방식</h4>
+        <p class="card-body">동굴 회피형 / 즉시 해결형 / 평화주의형. 싸움이 관계를 끝낼지 키울지 가르는 축.</p>
       </div>
       <div class="card metric-card">
         <div class="icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 9 8.5 12 2"/></svg>
         </div>
-        <h4 class="card-title">라이프스타일</h4>
-        <p class="card-body">취미·체형·소비 패턴·여가 루틴. 일상 합이 맞아야 관계도 오래갑니다.</p>
+        <h4 class="card-title">여가 · 라이프스타일</h4>
+        <p class="card-body">아웃도어 / 하이브리드 / 집순집돌. 주말 합이 안 맞으면 관계 자체가 피로해집니다.</p>
       </div>
     </div>
-    <p class="more-counter">상기 6개 외 <strong>+6</strong> 정밀 지표가 추가로 작동합니다.</p>
   </div>
 </section>
 
